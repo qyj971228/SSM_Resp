@@ -25,10 +25,10 @@
     
     <!--配置数据源-->
     <bean id="dataSource_Druid" class="com.alibaba.druid.pool.DruidDataSource">
-        <property name="DriverClassName" value="${jdbc.driver}"></property>
-        <property name="url" value="${jdbc.url}"></property>
-        <property name="username" value="${jdbc.username}"></property>
-        <property name="password" value="${jdbc.password}"></property>
+        <property name="DriverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
     </bean>
 
     <!--配置sessionFactory-->
@@ -42,5 +42,22 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.qyj.mapper"/>
     </bean>
+
+    <!--声明式事务控制-->
+    <!--平台事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource_Druid"/>
+    </bean>
+    <!--配置事务增强-->
+    <tx:advice id="txAdvice">
+        <tx:attributes>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--事务的aop织入-->
+    <aop:config>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.qyj.service.impl.*.*(..))"/>
+    </aop:config>
+
 
 </beans>
