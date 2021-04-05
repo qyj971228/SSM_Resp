@@ -24,5 +24,13 @@
     </bean>
     <!--开放静态资源的访问权限-->
     <mvc:default-servlet-handler/>
+    <!--    配置处理器映射器将返回的对象转为json-->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
+            </list>
+        </property>
+    </bean>
 
 </beans>
